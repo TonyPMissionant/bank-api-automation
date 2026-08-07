@@ -1,4 +1,4 @@
 export const validCredentials = {
-    username: 'emilys',
-    password: 'emilyspass'
+    username: 'john',
+    password: 'demo'
 };

@@ -9,21 +9,15 @@ export class AuthClient {
 
     async login(username: string, password: string) {
 
-        const response = await this.request.post(
-            `${ENV.baseUrl}/auth/login`,
+        return await this.request.get(
+            `${ENV.baseUrl}/login/${username}/${password}`,
             {
-                data: {
-                    username,
-                    password
+                headers: {
+                    Accept: 'application/json'
                 }
             }
-
         );
-        const responseBody = await response.json();
 
-        this.accessToken = responseBody.accessToken;
-
-        return response;
     }
 
     async getCurrentUser() {

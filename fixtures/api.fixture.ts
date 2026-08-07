@@ -2,12 +2,13 @@ import { test as base, expect } from '@playwright/test';
 import { PostClient } from '../api/clients/postClient';
 import { UserClient } from '../api/clients/userClient';
 import { AuthClient } from '../api/clients/authClient';
-import { validCredentials } from '../data/authData';
+import { CustomerClient } from '../api/clients/customerClient';
 
 type ApiFixtures = {
     postClient: PostClient;
     userClient: UserClient;
     authClient: AuthClient;
+    customerClient: CustomerClient;
 };
 
 export const test = base.extend<ApiFixtures>({
@@ -27,7 +28,12 @@ export const test = base.extend<ApiFixtures>({
 
         await use(authClient);
 
-    }
-});
+    },
+    customerClient: async ({ request }, use) => {
+        const customerClient = new CustomerClient(request);
 
+        await use(customerClient);
+    },
+
+}); 
 export { expect };
