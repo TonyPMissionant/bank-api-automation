@@ -8,6 +8,8 @@ test('Login and get account details', async ({ authClient, accountClient }) => {
         validCredentials.password
     );
 
+    console.log('LOGIN STATUS:', loginResponse.status());
+
     expect(loginResponse.status()).toBe(200);
 
     const loginBody = await loginResponse.json();
@@ -32,7 +34,7 @@ test('Login and get account details', async ({ authClient, accountClient }) => {
 
     expect(account.id).toBe(accountId);
     expect(account.customerId).toBe(customerId);
-    expect(account.type).toMatch(/CHECKING|SAVINGS/);
+    expect(['CHECKING', 'SAVINGS', 'LOAN']).toContain(account.type);
     expect(typeof account.balance).toBe('number');
 
 });

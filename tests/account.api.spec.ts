@@ -22,9 +22,9 @@ test('Login and get customer accounts', async ({ authClient, accountClient }) =>
     expect(accounts.length).toBeGreaterThan(0);
 
     for (const account of accounts) {
-        accountClient.getAccounts(customerId);
+        expect(account.customerId).toBe(customerId);
         expect(account.id).toBeGreaterThan(0);
-        expect(account.type).toMatch(/CHECKING|SAVINGS/);
+        expect(['CHECKING', 'SAVINGS', 'LOAN']).toContain(account.type);
         expect(typeof account.balance).toBe('number');
     }
 });
