@@ -9,6 +9,11 @@ export class AuthClient {
 
     async login(username: string, password: string) {
 
+        console.log(
+            'AUTH URL:',
+            `${ENV.baseUrl}/login/${username}/${password}`
+        );
+        
         return await this.request.get(
             `${ENV.baseUrl}/login/${username}/${password}`,
             {

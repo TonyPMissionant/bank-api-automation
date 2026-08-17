@@ -9,6 +9,9 @@ test('Login and get customer details', async ({ authClient, customerClient }) =>
         validCredentials.password
     );
 
+    console.log('LOGIN STATUS:', loginResponse.status());
+    console.log('LOGIN BODY:', await loginResponse.text());
+
     expect(loginResponse.status()).toBe(200);
 
     const loginBody = await loginResponse.json();
