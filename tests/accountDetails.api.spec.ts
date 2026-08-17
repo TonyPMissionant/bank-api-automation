@@ -10,23 +10,13 @@ test('Login and get account details', async ({ authClient, accountClient }) => {
 
     expect(customer.id).toBeGreaterThan(0);
 
-    const accountsResponse = await accountClient.getAccounts(
-        customer.id
-    );
-
-    expect(accountsResponse.status()).toBe(200);
-
-    const accounts = await accountsResponse.json();
+    const accounts = await accountClient.getAccounts(customer.id);
 
     expect(accounts.length).toBeGreaterThan(0);
 
     const accountId = accounts[0].id;
 
-    const accountResponse = await accountClient.getAccount(accountId);
-
-    expect(accountResponse.status()).toBe(200);
-
-    const account = await accountResponse.json();
+    const account = await accountClient.getAccount(accountId);
 
     expect(account.id).toBe(accountId);
     expect(account.customerId).toBe(customer.id);

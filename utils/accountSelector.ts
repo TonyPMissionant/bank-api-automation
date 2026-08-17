@@ -1,36 +1,37 @@
-import { AccountClient } from '../api/clients/accountClient';
 import { Account } from '../types/account';
+import { AccountClient } from '../api/clients/accountClient';
 
 export async function findTransferAccounts(
     accountClient: AccountClient,
-    accounts: Account[],
+    accounts: Account[]
 ) {
-    const validAccounts: Account[] = [];
 
     for (const account of accounts) {
-        const response = await accountClient.getAccount(account.id);
 
-        if (response.status() === 200) {
-            const accountBody = await response.json();
+        if (account.type !== 'CHECKING') {
+            continue;
+        }
 
-            if (
-                accountBody.balance > 0 &&
-                accountBody.type !== 'LOAN'
-            ) {
-                validAccounts.push(accountBody);
+        if (account.balance <= 0) {
+            continue;
+        }
+
+        for (const destination of accounts) {
+
+            if (destination.id === account.id) {
+                continue;
             }
-        }
-        if (validAccounts.length >= 2) {
-            break;
+
+            if (destination.type !== 'CHECKING') {
+                continue;
+            }
+
+            return {
+                fromAccount: account,
+                toAccount: destination
+            };
         }
     }
-    if (validAccounts.length < 2) {
-        throw new Error(
-            'Could not find two valid accounts for transfer testing.'
-        );
-    }
-    return {
-        fromAccount: validAccounts[0],
-        toAccount: validAccounts[1],
-    };
+
+    throw new Error('Could not find suitable transfer accounts');
 }

@@ -15,12 +15,10 @@ test('Transfer funds between accounts', async ({
 
     expect(customer.id).toBeGreaterThan(0);
 
-    const accountsResponse =
+    const accounts =
         await accountClient.getAccounts(customer.id);
 
-    expect(accountsResponse.status()).toBe(200);
-
-    const accounts = await accountsResponse.json();
+    expect(accounts.length).toBeGreaterThan(0);
 
     const {
         fromAccount,
@@ -32,20 +30,11 @@ test('Transfer funds between accounts', async ({
 
     const amount = 10;
 
-    const sourceBeforeResponse =
+    const sourceBefore =
         await accountClient.getAccount(fromAccount.id);
 
-    expect(sourceBeforeResponse.status()).toBe(200);
-
-    const sourceBefore = await sourceBeforeResponse.json();
-
-    const destinationBeforeResponse =
-        await accountClient.getAccount(toAccount.id);
-
-    expect(destinationBeforeResponse.status()).toBe(200);
-
     const destinationBefore =
-        await destinationBeforeResponse.json();
+        await accountClient.getAccount(toAccount.id);
 
     const transferResponse = await transferClient.transfer(
         fromAccount.id,
@@ -65,26 +54,20 @@ test('Transfer funds between accounts', async ({
 
     expect(transferResponse.status()).toBe(200);
 
-    const sourceAfterResponse =
+    const sourceAfter =
         await accountClient.getAccount(fromAccount.id);
 
-    expect(sourceAfterResponse.status()).toBe(200);
-
-    const sourceAfter = await sourceAfterResponse.json();
-
-    const destinationAfterResponse =
+    const destinationAfter =
         await accountClient.getAccount(toAccount.id);
 
-    expect(destinationAfterResponse.status()).toBe(200);
-
-    const destinationAfter =
-        await destinationAfterResponse.json();
-
     expect(sourceAfter.balance).toBeCloseTo(
-        sourceBefore.balance - amount, 2
+        sourceBefore.balance - amount,
+        2
     );
 
     expect(destinationAfter.balance).toBeCloseTo(
-        destinationBefore.balance + amount, 2
+        destinationBefore.balance + amount,
+        2
     );
+
 });

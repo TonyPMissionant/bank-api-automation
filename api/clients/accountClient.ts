@@ -1,13 +1,14 @@
 import { APIRequestContext } from '@playwright/test';
 import { ENV } from '../../config/env';
+import { Account } from '../../types/account';
 
 export class AccountClient {
 
     constructor(private request: APIRequestContext) { }
 
-    async getAccounts(customerId: number) {
+    async getAccounts(customerId: number): Promise<Account[]> {
 
-        return await this.request.get(
+        const response = await this.request.get(
             `${ENV.baseUrl}/customers/${customerId}/accounts`,
             {
                 headers: {
@@ -16,10 +17,12 @@ export class AccountClient {
             }
         );
 
+        return await response.json();
     }
-    async getAccount(accountId: number) {
 
-        return await this.request.get(
+    async getAccount(accountId: number): Promise<Account> {
+
+        const response = await this.request.get(
             `${ENV.baseUrl}/accounts/${accountId}`,
             {
                 headers: {
@@ -28,5 +31,6 @@ export class AccountClient {
             }
         );
 
+        return await response.json();
     }
 }
