@@ -8,19 +8,15 @@ test('Transfer funds between accounts', async ({
     transferClient
 }) => {
 
-    const loginResponse = await authClient.login(
+    const customer = await authClient.login(
         validCredentials.username,
         validCredentials.password
     );
 
-    expect(loginResponse.status()).toBe(200);
-
-    const loginBody = await loginResponse.json();
-
-    const customerId = loginBody.id;
+    expect(customer.id).toBeGreaterThan(0);
 
     const accountsResponse =
-        await accountClient.getAccounts(customerId);
+        await accountClient.getAccounts(customer.id);
 
     expect(accountsResponse.status()).toBe(200);
 

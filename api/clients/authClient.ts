@@ -1,20 +1,17 @@
 import { APIRequestContext } from '@playwright/test';
 import { ENV } from '../../config/env';
+import { Customer } from '../../types/customer';
 
 export class AuthClient {
 
-    private accessToken: string | undefined;
+    constructor(private request: APIRequestContext) {}
 
-    constructor(private request: APIRequestContext) { }
+    async login(
+        username: string,
+        password: string
+    ): Promise<Customer> {
 
-    async login(username: string, password: string) {
-
-        console.log(
-            'AUTH URL:',
-            `${ENV.baseUrl}/login/${username}/${password}`
-        );
-        
-        return await this.request.get(
+        const response = await this.request.get(
             `${ENV.baseUrl}/login/${username}/${password}`,
             {
                 headers: {
@@ -23,17 +20,6 @@ export class AuthClient {
             }
         );
 
+        return await response.json();
     }
-
-    async getCurrentUser() {
-
-        return await this.request.get(
-            `${ENV.baseUrl}/auth/me`,
-            {
-                headers: {
-                    Authorization: `Bearer ${this.accessToken}`
-                }
-            }
-        );
-    }
-} 
+}

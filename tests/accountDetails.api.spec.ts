@@ -3,20 +3,16 @@ import { validCredentials } from '../data/authData';
 
 test('Login and get account details', async ({ authClient, accountClient }) => {
 
-    const loginResponse = await authClient.login(
+    const customer = await authClient.login(
         validCredentials.username,
         validCredentials.password
     );
 
-    console.log('LOGIN STATUS:', loginResponse.status());
+    expect(customer.id).toBeGreaterThan(0);
 
-    expect(loginResponse.status()).toBe(200);
-
-    const loginBody = await loginResponse.json();
-
-    const customerId = loginBody.id;
-
-    const accountsResponse = await accountClient.getAccounts(customerId);
+    const accountsResponse = await accountClient.getAccounts(
+        customer.id
+    );
 
     expect(accountsResponse.status()).toBe(200);
 
@@ -33,7 +29,7 @@ test('Login and get account details', async ({ authClient, accountClient }) => {
     const account = await accountResponse.json();
 
     expect(account.id).toBe(accountId);
-    expect(account.customerId).toBe(customerId);
+    expect(account.customerId).toBe(customer.id);
     expect(['CHECKING', 'SAVINGS', 'LOAN']).toContain(account.type);
     expect(typeof account.balance).toBe('number');
 

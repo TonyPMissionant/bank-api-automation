@@ -2,18 +2,14 @@ import { test, expect } from '../fixtures/api.fixture';
 import { validCredentials } from '../data/authData';
 
 test('Login and get customer accounts', async ({ authClient, accountClient }) => {
-    const loginResponse = await authClient.login(
+    const customer = await authClient.login(
         validCredentials.username,
         validCredentials.password
     );
 
-    expect(loginResponse.status()).toBe(200);
+    expect(customer.id).toBeGreaterThan(0);
 
-    const loginBody = await loginResponse.json();
-
-    const customerId = loginBody.id;
-
-    const response = await accountClient.getAccounts(customerId);
+    const response = await accountClient.getAccounts(customer.id);
 
     expect(response.status()).toBe(200);
 
@@ -30,7 +26,7 @@ test('Login and get customer accounts', async ({ authClient, accountClient }) =>
             account.balance
         );
 
-        expect(account.customerId).toBe(customerId);
+        expect(account.customerId).toBe(customer.id);
         expect(account.id).toBeGreaterThan(0);
         expect(['CHECKING', 'SAVINGS', 'LOAN']).toContain(account.type);
         expect(typeof account.balance).toBe('number');

@@ -4,26 +4,15 @@ import { expectedCustomer } from '../data/customerData';
 
 test('Login and get customer details', async ({ authClient, customerClient }) => {
 
-    const loginResponse = await authClient.login(
+    const customer = await authClient.login(
         validCredentials.username,
         validCredentials.password
     );
 
-    console.log('LOGIN STATUS:', loginResponse.status());
-    console.log('LOGIN BODY:', await loginResponse.text());
-
-    expect(loginResponse.status()).toBe(200);
-
-    const loginBody = await loginResponse.json();
-
-    const customerId = loginBody.id;
-
-    console.log('Customer ID:', customerId);
-
-    expect(customerId).toBeGreaterThan(0);
+    expect(customer.id).toBeGreaterThan(0);
 
     const customerResponse = await customerClient.getCustomer(
-        customerId
+        customer.id
     );
 
     expect(customerResponse.status()).toBe(200);
