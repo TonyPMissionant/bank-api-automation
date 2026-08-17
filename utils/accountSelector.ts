@@ -1,10 +1,11 @@
 import { AccountClient } from '../api/clients/accountClient';
+import { Account } from '../data/accountData';
 
 export async function findTransferAccounts(
     accountClient: AccountClient,
-    accounts: any[],
+    accounts: Account[],
 ) {
-    const validAccounts = [];
+    const validAccounts: Account[] = [];
 
     for (const account of accounts) {
         const response = await accountClient.getAccount(account.id);
