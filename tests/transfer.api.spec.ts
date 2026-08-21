@@ -36,23 +36,20 @@ test('Transfer funds between accounts', async ({
     const destinationBefore =
         await accountClient.getAccount(toAccount.id);
 
-    const transferResponse = await transferClient.transfer(
+    const transferResult = await transferClient.transfer(
         fromAccount.id,
         toAccount.id,
         amount
     );
 
     console.log(
-        'TRANSFER STATUS:',
-        transferResponse.status()
+        'TRANSFER RESULT:',
+        transferResult
     );
 
-    console.log(
-        'TRANSFER BODY:',
-        await transferResponse.text()
+    expect(transferResult).toContain(
+        'Successfully transferred'
     );
-
-    expect(transferResponse.status()).toBe(200);
 
     const sourceAfter =
         await accountClient.getAccount(fromAccount.id);

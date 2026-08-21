@@ -8,9 +8,10 @@ export class TransferClient {
     async transfer(
         fromAccountId: number,
         toAccountId: number,
-        amount: number      
-    ) {
-        return await this.request.post(
+        amount: number
+    ): Promise<string> {
+
+        const response = await this.request.post(
             `${ENV.baseUrl}/transfer`,
             {
                 params: {
@@ -23,5 +24,7 @@ export class TransferClient {
                 }
             }
         );
+
+        return await response.text();
     }
 }
