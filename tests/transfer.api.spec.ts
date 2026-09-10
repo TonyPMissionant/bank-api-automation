@@ -23,10 +23,7 @@ test('Transfer funds between accounts', async ({
     const {
         fromAccount,
         toAccount
-    } = await findTransferAccounts(
-        accountClient,
-        accounts
-    );
+    } = await findTransferAccounts(accounts);
 
     const amount = 10;
 

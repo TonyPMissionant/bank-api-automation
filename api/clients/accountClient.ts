@@ -6,6 +6,8 @@ export class AccountClient {
 
     constructor(private request: APIRequestContext) { }
 
+    // returns an Account array as a Promise
+
     async getAccounts(customerId: number): Promise<Account[]> {
 
         const response = await this.request.get(

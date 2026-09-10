@@ -6,7 +6,7 @@ export class CustomerClient {
 
     constructor(private request: APIRequestContext) { }
 
-// customer's data
+    // customer's data
 
     async getCustomer(id: number): Promise<Customer> {
 

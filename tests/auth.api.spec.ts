@@ -18,5 +18,6 @@ test('Login and get customer details', async ({ authClient, customerClient }) =>
     expect(customerDetails.firstName).toBe(expectedCustomer.firstName);
     expect(customerDetails.lastName).toBe(expectedCustomer.lastName);
     expect(customerDetails.address.city).toBe(expectedCustomer.city);
+    expect(customerDetails.address.street).toBeDefined();
 
 });

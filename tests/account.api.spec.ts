@@ -1,7 +1,7 @@
 import { test, expect } from '../fixtures/api.fixture';
 import { validCredentials } from '../data/authData';
 
-test('Login and get customer accounts', async ({ authClient, accountClient }) => {
+test('Login and get a customers account list', async ({ authClient, accountClient }) => {
 
     const customer = await authClient.login(
         validCredentials.username,
