@@ -1,8 +1,6 @@
 import { Account } from '../types/account';
-import { AccountClient } from '../api/clients/accountClient';
 
 export async function findTransferAccounts(
-    accountClient: AccountClient,
     accounts: Account[]
 ) {
 
